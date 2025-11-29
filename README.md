@@ -2,8 +2,6 @@
 
 **⚠️ PROTOTYPE - FOR TESTING AND DISCUSSION PURPOSES ONLY**
 
-**This repository contains only bootstrap files and documentation. No actual implementation code is included. This is a prototype to facilitate discussion and planning for the documentation resources.**
-
 ---
 
 Documentation and reference resources for PHP and Symfony development.
