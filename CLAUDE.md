@@ -27,7 +27,7 @@ debug-mcp-resources
 Resources use URI templates with dynamic parameters:
 
 ```php
-use PhpMcp\Server\Attributes\McpResourceTemplate;
+use Mcp\Capability\Attribute\McpResourceTemplate;
 
 class DocumentationResource
 {
@@ -175,7 +175,7 @@ The server discovers resources through:
 Uses official `modelcontextprotocol/php-sdk` attributes:
 
 ```php
-use PhpMcp\Server\Attributes\McpResourceTemplate;
+use Mcp\Capability\Attribute\McpResourceTemplate;
 
 #[McpResourceTemplate(
     uriTemplate: 'scheme://path/{param}',

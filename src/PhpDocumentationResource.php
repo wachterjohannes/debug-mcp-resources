@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Wachterjohannes\DebugMcp\Resources;
 
-use PhpMcp\Server\Attributes\McpResourceTemplate;
+use Mcp\Capability\Attribute\McpResourceTemplate;
 
 /**
  * Provides PHP language documentation and best practices.
@@ -37,8 +37,8 @@ class PhpDocumentationResource
     #[McpResourceTemplate(
         uriTemplate: 'php://docs/{topic}',
         name: 'php_docs',
-        mimeType: 'text/markdown',
-        description: 'PHP language documentation and best practices'
+        description: 'PHP language documentation and best practices',
+        mimeType: 'text/markdown'
     )]
     public function getDocumentation(string $topic): string
     {

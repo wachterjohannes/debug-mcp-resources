@@ -134,7 +134,7 @@ Each resource provider class handles a specific documentation domain:
 <?php
 namespace Wachterjohannes\DebugMcp\Resources;
 
-use PhpMcp\Server\Attributes\McpResourceTemplate;
+use Mcp\Capability\Attribute\McpResourceTemplate;
 
 class PhpDocumentationResource
 {

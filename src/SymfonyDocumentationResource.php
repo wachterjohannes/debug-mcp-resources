@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Wachterjohannes\DebugMcp\Resources;
 
-use PhpMcp\Server\Attributes\McpResourceTemplate;
+use Mcp\Capability\Attribute\McpResourceTemplate;
 
 /**
  * Provides Symfony framework documentation and guides.
