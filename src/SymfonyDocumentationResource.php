@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Wachterjohannes\DebugMcp\Resources;
 
+use Mcp\Capability\Attribute\McpResource;
 use Mcp\Capability\Attribute\McpResourceTemplate;
 
 /**
@@ -23,6 +24,62 @@ class SymfonyDocumentationResource
         'console-commands',
         'dependency-injection',
     ];
+
+    /**
+     * Topic aliases that map to canonical topic names.
+     *
+     * @var array<string, string>
+     */
+    private const TOPIC_ALIASES = [
+        'console' => 'console-commands',
+        'di' => 'dependency-injection',
+        'dependency' => 'dependency-injection',
+    ];
+
+    /**
+     * Get list of available Symfony documentation topics.
+     *
+     * @return string Markdown-formatted list of available topics
+     */
+    #[McpResource(
+        uri: 'symfony://docs/index',
+        name: 'symfony_docs_index',
+        description: 'List of available Symfony documentation topics',
+        mimeType: 'text/markdown'
+    )]
+    public function getIndex(): string
+    {
+        $topics = array_map(
+            fn($topic) => "- `{$topic}`: Access via `symfony://docs/{$topic}`",
+            self::ALLOWED_TOPICS
+        );
+
+        $aliases = array_map(
+            fn($alias, $target) => "- `{$alias}` → `{$target}`",
+            array_keys(self::TOPIC_ALIASES),
+            array_values(self::TOPIC_ALIASES)
+        );
+
+        $topicsList = implode("\n", $topics);
+        $aliasesList = implode("\n", $aliases);
+
+        return <<<MARKDOWN
+# Symfony Documentation Topics
+
+## Available Topics
+
+{$topicsList}
+
+## Topic Aliases
+
+{$aliasesList}
+
+## Usage Examples
+
+- Full topic name: `symfony://docs/console-commands`
+- Using alias: `symfony://docs/console`
+MARKDOWN;
+    }
 
     /**
      * Get Symfony documentation content for a specific topic.
@@ -49,8 +106,11 @@ class SymfonyDocumentationResource
             );
         }
 
+        // Resolve topic aliases to canonical names
+        $canonicalTopic = self::TOPIC_ALIASES[$topic] ?? $topic;
+
         // Validate topic against allowlist
-        if (!in_array($topic, self::ALLOWED_TOPICS, true)) {
+        if (!in_array($canonicalTopic, self::ALLOWED_TOPICS, true)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Unknown topic: %s. Available topics: %s',
@@ -60,8 +120,8 @@ class SymfonyDocumentationResource
             );
         }
 
-        // Construct safe file path
-        $filePath = __DIR__ . '/../resources/symfony/' . $topic . '.md';
+        // Construct safe file path using canonical topic
+        $filePath = __DIR__ . '/../resources/symfony/' . $canonicalTopic . '.md';
 
         // Verify file exists
         if (!file_exists($filePath)) {
